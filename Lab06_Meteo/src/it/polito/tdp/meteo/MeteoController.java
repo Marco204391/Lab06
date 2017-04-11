@@ -2,7 +2,6 @@ package it.polito.tdp.meteo;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -38,7 +37,11 @@ public class MeteoController {
 
 	@FXML
 	void doCalcolaUmidita(ActionEvent event) {
-
+		int mese=boxMese.getValue();
+    	if(mese<1||mese>12){
+    		txtResult.appendText("Mese non valido");
+    	}
+    	txtResult.appendText(model.getUmiditaMedia(mese));
 	}
 
 	@FXML
@@ -47,13 +50,12 @@ public class MeteoController {
 		assert btnCalcola != null : "fx:id=\"btnCalcola\" was not injected: check your FXML file 'Meteo.fxml'.";
 		assert btnUmidita != null : "fx:id=\"btnUmidita\" was not injected: check your FXML file 'Meteo.fxml'.";
 		assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Meteo.fxml'.";
-		
+		boxMese.getItems().addAll(1,2,3,4,5,6,7,8,9,10,11,12);
 	}
+	
 
 	public void setModel(Model model) {
 		this.model=model;
 		// TODO Auto-generated method stub
-		boxMese.getItems().addAll(1+2+3+4+5+6+7+8+9+10+11+12);
 	}
-
 }

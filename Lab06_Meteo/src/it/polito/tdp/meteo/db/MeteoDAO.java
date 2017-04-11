@@ -41,12 +41,85 @@ public class MeteoDAO {
 
 	public List<Rilevamento> getAllRilevamentiLocalitaMese(int mese, String localita) {
 
-		return null;
+		final String sql = "SELECT Localita, Data, Umidita FROM situazione WHERE  Month(Data)=? AND localita=? ";
+
+		List<Rilevamento> rilevamenti = new ArrayList<Rilevamento>();
+
+		try {
+			Connection conn = DBConnect.getInstance().getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+
+			st.setInt(1, mese);
+			st.setString(2, localita);
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+
+				Rilevamento r = new Rilevamento(rs.getString("Localita"), rs.getDate("Data"), rs.getInt("Umidita"));
+				rilevamenti.add(r);
+			}
+
+			conn.close();
+			return rilevamenti;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 
-	public Double getAvgRilevamentiLocalitaMese(int mese, String localita) {
+	public List<String> getCitta(int mese){
+		final String sql = "SELECT DISTINCT Localita FROM situazione WHERE Month(Data)=? ";
 
-		return 0.0;
+		List<String> citta = new ArrayList<String>();
+
+		try {
+			Connection conn = DBConnect.getInstance().getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+
+			st.setInt(1, mese);
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+
+				String r =rs.getString("Localita");
+				citta.add(r);
+			}
+			conn.close();
+			return citta;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+	public Double getAvgRilevamentiLocalitaMese(int mese, String localita) {
+		
+		final String sql = "SELECT AVG(Umidita) FROM situazione WHERE  Month(Data)=? AND localita=? ";
+
+		Double tmp=0.0;
+
+		try {
+			Connection conn = DBConnect.getInstance().getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+
+			st.setInt(1, mese);
+			st.setString(2, localita);
+			ResultSet rs = st.executeQuery();
+
+			while(rs.next())
+				tmp= rs.getDouble("AVG(Umidita)");
+			
+			conn.close();
+			return tmp;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 
 }
