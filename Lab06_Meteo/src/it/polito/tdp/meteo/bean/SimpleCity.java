@@ -4,6 +4,7 @@ public class SimpleCity {
 
 	private String nome;
 	private int costo;
+	private int permanenza=1;
 	
 	public SimpleCity(String nome) {
 		this.nome = nome;
@@ -59,5 +60,18 @@ public class SimpleCity {
 	public String toString() {
 		return nome;
 	}
-	
+
+	public int getPermanenza() {
+		return permanenza;
+	}
+
+	public void setPermanenza(int permanenza) {
+		this.permanenza = permanenza;
+	}
+	public void incrementaPermanenza(){
+		permanenza++;
+	}
+	public void decrementaPermanenza(){
+		permanenza--;
+	}
 }
